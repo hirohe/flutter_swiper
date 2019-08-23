@@ -10,6 +10,10 @@ part 'custom_layout.dart';
 
 typedef void SwiperOnTap(int index);
 
+typedef void SwiperOnTapDown(int index, TapDownDetails details);
+
+typedef void SwiperOnTapUp(int index, TapUpDetails details);
+
 typedef Widget SwiperDataBuilder(BuildContext context, dynamic data, int index);
 
 /// default auto play delay
@@ -79,6 +83,10 @@ class Swiper extends StatefulWidget {
   ///Called when tap
   final SwiperOnTap onTap;
 
+  final SwiperOnTapDown onTapDown;
+
+  final SwiperOnTapUp onTapUp;
+
   ///The swiper pagination plugin
   final SwiperPlugin pagination;
 
@@ -125,6 +133,8 @@ class Swiper extends StatefulWidget {
     this.onIndexChanged,
     this.index,
     this.onTap,
+    this.onTapDown,
+    this.onTapUp,
     this.control,
     this.loop: true,
     this.curve: Curves.ease,
@@ -169,6 +179,8 @@ class Swiper extends StatefulWidget {
     ValueChanged<int> onIndexChanged,
     int index,
     SwiperOnTap onTap,
+    SwiperOnTapDown onTapDown,
+    SwiperOnTapUp onTapUp,
     bool loop: true,
     Curve curve: Curves.ease,
     Axis scrollDirection: Axis.horizontal,
@@ -206,6 +218,8 @@ class Swiper extends StatefulWidget {
         onIndexChanged: onIndexChanged,
         index: index,
         onTap: onTap,
+        onTapDown: onTapDown,
+        onTapUp: onTapUp,
         curve: curve,
         scrollDirection: scrollDirection,
         pagination: pagination,
@@ -234,6 +248,8 @@ class Swiper extends StatefulWidget {
     ValueChanged<int> onIndexChanged,
     int index,
     SwiperOnTap onTap,
+    SwiperOnTapDown onTapDown,
+    SwiperOnTapUp onTapUp,
     bool loop: true,
     Curve curve: Curves.ease,
     Axis scrollDirection: Axis.horizontal,
@@ -268,6 +284,8 @@ class Swiper extends StatefulWidget {
         onIndexChanged: onIndexChanged,
         index: index,
         onTap: onTap,
+        onTapDown: onTapDown,
+        onTapUp: onTapUp,
         curve: curve,
         key: key,
         scrollDirection: scrollDirection,
@@ -389,6 +407,12 @@ class _SwiperState extends _SwiperTimerMixin {
       onTap: () {
         this.widget.onTap(index);
       },
+      onTapDown: (TapDownDetails details) {
+        this.widget.onTapDown(index, details);
+      },
+      onTapUp: (TapUpDetails details) {
+        this.widget.onTapUp(index, details);
+      },
       child: widget.itemBuilder(context, index),
     );
   }
@@ -462,7 +486,7 @@ class _SwiperState extends _SwiperTimerMixin {
 
   Widget _buildSwiper() {
     IndexedWidgetBuilder itemBuilder;
-    if (widget.onTap != null) {
+    if ([widget.onTap, widget.onTapDown, widget.onTapUp].any((thing) => thing != null)) {
       itemBuilder = _wrapTap;
     } else {
       itemBuilder = widget.itemBuilder;
