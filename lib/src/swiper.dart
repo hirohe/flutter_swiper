@@ -405,13 +405,13 @@ class _SwiperState extends _SwiperTimerMixin {
     return new GestureDetector(
       behavior: HitTestBehavior.opaque,
       onTap: () {
-        this.widget.onTap(index);
+        if (this.widget.onTap != null) this.widget.onTap(index);
       },
       onTapDown: (TapDownDetails details) {
-        this.widget.onTapDown(index, details);
+        if (this.widget.onTapDown != null) this.widget.onTapDown(index, details);
       },
       onTapUp: (TapUpDetails details) {
-        this.widget.onTapUp(index, details);
+        if (this.widget.onTapUp != null) this.widget.onTapUp(index, details);
       },
       child: widget.itemBuilder(context, index),
     );
