@@ -83,8 +83,10 @@ class Swiper extends StatefulWidget {
   ///Called when tap
   final SwiperOnTap onTap;
 
+  ///Called when tap down
   final SwiperOnTapDown onTapDown;
 
+  ///Called when tap up
   final SwiperOnTapUp onTapUp;
 
   ///The swiper pagination plugin
